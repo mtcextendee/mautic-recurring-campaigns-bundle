@@ -1,0 +1,1 @@
+# mautic-recurring-campaigns-bundle
