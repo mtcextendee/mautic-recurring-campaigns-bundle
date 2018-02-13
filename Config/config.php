@@ -2,7 +2,7 @@
 
 return [
     'name'        => 'Recurring Campaigns',
-    'description' => 'Solution for repeating tasks',
+    'description' => 'Repeating tasks for Mautic',
     'author'      => 'kuzmany.biz',
     'version'     => '1.0.0',
     'services' => [
