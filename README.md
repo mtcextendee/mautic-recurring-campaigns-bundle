@@ -4,6 +4,10 @@
 
 Repeating tasks for Mautic
 
+## Workaround
+
+Mautic insert every action of campaigns to campaign_lead_event_log table. This plugin just remove logs from contact. It's basic workaround, but keep in mind, you lost data from campaign statistics (not emails stats etc.).
+
 ## Installation
 
 ### Composer from Mautic root directory
