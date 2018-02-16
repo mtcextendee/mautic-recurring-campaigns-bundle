@@ -9,7 +9,7 @@ class RecurringCampaignsIntegration extends AbstractIntegration
     public function getName()
     {
         // should be the name of the integration
-        return 'ReccuringCampaigns';
+        return 'RecurringCampaigns';
     }
 
     public function getAuthenticationType()
@@ -17,4 +17,5 @@ class RecurringCampaignsIntegration extends AbstractIntegration
         /* @see \Mautic\PluginBundle\Integration\AbstractIntegration::getAuthenticationType */
         return 'none';
     }
+
 }

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'name'        => 'Recurring Campaigns',
+    'name'        => 'RecurringCampaigns',
     'description' => 'Repeating tasks for Mautic',
     'author'      => 'kuzmany.biz',
     'version'     => '1.0.0',
@@ -12,6 +12,7 @@ return [
                 'arguments' => [
                     'mautic.helper.integration',
                     'doctrine.dbal.default_connection',
+                    'mautic.campaign.model.campaign',
                 ],
             ],
         ],
@@ -20,6 +21,13 @@ return [
                 'class' => \MauticPlugin\MauticRecurringCampaignsBundle\Form\Type\CampaignEventRemoveLogsActionType::class,
                 'alias' => 'removelogs',
             ],
-        ]
+        ],
+        'integrations' => [
+            'mautic.integration.reccuring.campaigns' => [
+                'class'     => \MauticPlugin\MauticRecurringCampaignsBundle\Integration\RecurringCampaignsIntegration::class,
+                'arguments' => [
+                ],
+            ],
+        ],
     ],
 ];

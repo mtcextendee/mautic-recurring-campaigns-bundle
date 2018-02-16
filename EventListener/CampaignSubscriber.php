@@ -15,6 +15,7 @@ use Doctrine\DBAL\Connection;
 use Mautic\CampaignBundle\CampaignEvents;
 use Mautic\CampaignBundle\Event\CampaignBuilderEvent;
 use Mautic\CampaignBundle\Event\CampaignExecutionEvent;
+use Mautic\CampaignBundle\Model\CampaignModel;
 use Mautic\CoreBundle\EventListener\CommonSubscriber;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
 use MauticPlugin\MauticRecurringCampaignsBundle\RecurringCampaignsEvents;
@@ -27,19 +28,26 @@ class CampaignSubscriber extends CommonSubscriber
     protected $integrationHelper;
 
     /**
-     * @var $db
+     * @var Connection
      */
     protected $db;
+
+    /**
+     * @var CampaignModel
+     */
+    protected $campaignModel;
 
     /**
      * ButtonSubscriber constructor.
      *
      * @param IntegrationHelper $helper
+     * @param Connection $db
      */
-    public function __construct(IntegrationHelper $integrationHelper, Connection $db)
+    public function __construct(IntegrationHelper $integrationHelper, Connection $db, CampaignModel $campaignModel)
     {
         $this->integrationHelper = $integrationHelper;
         $this->db = $db;
+        $this->campaignModel = $campaignModel;
     }
 
     /**
@@ -60,6 +68,13 @@ class CampaignSubscriber extends CommonSubscriber
      */
     public function onCampaignBuild(CampaignBuilderEvent $event)
     {
+        /** @var MailTesterIntegration $myIntegration */
+        $myIntegration = $this->integrationHelper->getIntegrationObject('RecurringCampaigns');
+
+        if (false === $myIntegration || !$myIntegration->getIntegrationSettings()->getIsPublished()) {
+            return;
+        }
+
         $action = [
             'label' => 'plugin.campaign.recurring.campaign.event.remove.logs',
             'eventName' => RecurringCampaignsEvents::ON_CAMPAIGN_TRIGGER_ACTION,
@@ -74,30 +89,39 @@ class CampaignSubscriber extends CommonSubscriber
      */
     public function onCampaignTriggerAction(CampaignExecutionEvent $event)
     {
-        static $alreadyRemoved = [];
+
+        /** @var MailTesterIntegration $myIntegration */
+        $myIntegration = $this->integrationHelper->getIntegrationObject('RecurringCampaigns');
+
+        if (false === $myIntegration || !$myIntegration->getIntegrationSettings()->getIsPublished()) {
+            return;
+        }
 
         $lead = $event->getLead();
         $campaigns = $event->getConfig()['campaigns'];
-        $removeAllLogs = $event->getConfig()['all'];
 
         $qb = $this->db;
-        foreach ($campaigns as $campaign) {
-            if($removeAllLogs && !isset($alreadyRemoved[$campaign])){
+        foreach ($campaigns as $campaignId) {
+            if(!empty($event->getConfig()['action'])){
                 $qb->delete(
                     MAUTIC_TABLE_PREFIX.'campaign_lead_event_log',
                     [
-                        'campaign_id' => $campaign,
+                        'lead_id' => (int)$lead->getId(),
+                        'campaign_id' => $campaignId,
+                        'is_scheduled' => 1,
                     ]
                 );
-                $alreadyRemoved[$campaign] = true;
             }else {
                 $qb->delete(
                     MAUTIC_TABLE_PREFIX.'campaign_lead_event_log',
                     [
                         'lead_id' => (int)$lead->getId(),
-                        'campaign_id' => $campaign,
+                        'campaign_id' => $campaignId,
                     ]
                 );
+            }
+            if(!empty($event->getConfig()['remove'])){
+                $this->campaignModel->removeLead($this->campaignModel->getEntity($campaignId), $lead->getId());
             }
         }
     }

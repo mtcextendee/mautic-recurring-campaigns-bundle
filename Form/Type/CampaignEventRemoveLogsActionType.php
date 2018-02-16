@@ -43,16 +43,27 @@ class CampaignEventRemoveLogsActionType extends AbstractType
             ],
         ]);
 
-
         $builder->add(
-            'all',
+            'action',
             'yesno_button_group',
             [
-                'label' => 'plugin.recurring.campaigns.campaign.remove.all',
+                'label' => 'plugin.recurring.campaigns.campaign.remove.scheduled',
                 'attr'=> [
-                  'tooltip'=>'plugin.recurring.campaigns.campaign.remove.all.desc'
+                  'tooltip'=>'plugin.recurring.campaigns.campaign.remove.scheduled.desc'
                 ],
-                'data'       => !empty($options['data']['all']) ? true : false,
+                'data'       => !empty($options['data']['action']) ? true : false,
+            ]
+        );
+
+        $builder->add(
+            'remove',
+            'yesno_button_group',
+            [
+                'label' => 'plugin.recurring.campaigns.campaign.remove.from',
+                'attr'=> [
+                  'tooltip'=>'plugin.recurring.campaigns.campaign.remove.from.desc'
+                ],
+                'data'       => !empty($options['data']['remove']) ? true : false,
             ]
         );
 
