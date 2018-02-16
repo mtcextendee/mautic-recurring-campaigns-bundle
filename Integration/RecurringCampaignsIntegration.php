@@ -18,4 +18,9 @@ class RecurringCampaignsIntegration extends AbstractIntegration
         return 'none';
     }
 
+    public function getIcon()
+    {
+        return 'plugins/MauticRecurringCampaignsBundle/Assets/img/RecurringCampaigns.png';
+    }
+
 }
