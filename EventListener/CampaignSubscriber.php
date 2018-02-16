@@ -121,7 +121,7 @@ class CampaignSubscriber extends CommonSubscriber
                 );
             }
             if(!empty($event->getConfig()['remove'])){
-                $this->campaignModel->removeLead($this->campaignModel->getEntity($campaignId), $lead->getId());
+                $this->campaignModel->removeLead($this->campaignModel->getEntity($campaignId), $lead->getId(), true);
             }
         }
     }
