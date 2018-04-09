@@ -1,5 +1,7 @@
 # MauticRecurringCampaignsBundle 
 
+Support my work https://www.paypal.me/kuzmany 
+
 ## Recurring Campaigns
 
 Repeating tasks for Mautic
