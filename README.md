@@ -1,6 +1,6 @@
 # MauticRecurringCampaignsBundle 
 
-Support my work https://www.paypal.me/kuzmany 
+Support my work by <a href="https://www.paypal.me/kuzmany">PayPal</a> or host your Mautic on recommended affil host  <a href="https://www.vultr.com/?ref=7223705">Vultr</a> easy with <a href="https://mtcpilot.com/">MTCPilot</a>
 
 ## Recurring Campaigns
 
