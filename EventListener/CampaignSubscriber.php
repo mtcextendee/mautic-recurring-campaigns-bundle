@@ -13,9 +13,11 @@ namespace MauticPlugin\MauticRecurringCampaignsBundle\EventListener;
 
 use Doctrine\DBAL\Connection;
 use Mautic\CampaignBundle\CampaignEvents;
+use Mautic\CampaignBundle\Entity\Event;
 use Mautic\CampaignBundle\Event\CampaignBuilderEvent;
 use Mautic\CampaignBundle\Event\CampaignExecutionEvent;
 use Mautic\CampaignBundle\Model\CampaignModel;
+use Mautic\CampaignBundle\Model\EventModel;
 use Mautic\CoreBundle\EventListener\CommonSubscriber;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
 use MauticPlugin\MauticRecurringCampaignsBundle\RecurringCampaignsEvents;
@@ -38,16 +40,26 @@ class CampaignSubscriber extends CommonSubscriber
     protected $campaignModel;
 
     /**
+     * @var EventModel
+     */
+    private $eventModel;
+
+    /**
      * ButtonSubscriber constructor.
      *
-     * @param IntegrationHelper $helper
-     * @param Connection $db
+     * @param IntegrationHelper $integrationHelper
+     * @param Connection        $db
+     * @param CampaignModel     $campaignModel
+     * @param EventModel        $eventModel
+     *
+     * @internal param IntegrationHelper $helper
      */
-    public function __construct(IntegrationHelper $integrationHelper, Connection $db, CampaignModel $campaignModel)
+    public function __construct(IntegrationHelper $integrationHelper, Connection $db, CampaignModel $campaignModel, EventModel $eventModel)
     {
         $this->integrationHelper = $integrationHelper;
         $this->db = $db;
         $this->campaignModel = $campaignModel;
+        $this->eventModel = $eventModel;
     }
 
     /**
@@ -99,8 +111,23 @@ class CampaignSubscriber extends CommonSubscriber
 
         $lead = $event->getLead();
         $campaigns = $event->getConfig()['campaigns'];
-
+        $limit = $event->getConfig()['limit'];
         $qb = $this->db;
+
+        $properties = $event->getEvent()['properties'];
+        /** @var Event $event */
+        $eventEntity = $this->eventModel->getEntity($event->getEvent()['id']);
+        $numberOfRotation = isset($properties['numberOfRotation']) ? $properties['numberOfRotation'] : 0;
+
+        // return true if max execution
+        if (!empty($limit) && $numberOfRotation >= $limit) {
+            return $event->setResult(true);
+        }
+
+        $properties['numberOfRotation'] = $numberOfRotation + 1;
+        $eventEntity->setProperties($properties);
+        $this->eventModel->saveEntity($eventEntity);
+
         foreach ($campaigns as $campaignId) {
             if(!empty($event->getConfig()['action'])){
                 $qb->delete(

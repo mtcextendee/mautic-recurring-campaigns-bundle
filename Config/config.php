@@ -13,6 +13,7 @@ return [
                     'mautic.helper.integration',
                     'doctrine.dbal.default_connection',
                     'mautic.campaign.model.campaign',
+                    'mautic.campaign.model.event',
                 ],
             ],
         ],
