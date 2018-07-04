@@ -35,4 +35,4 @@ Download the last version of plugin https://madesimple.madesimple.cloud/asset/6:
 4. Go to campaigns and use new action Recurring Campaigns - Remove logs
 ![image](https://user-images.githubusercontent.com/462477/36288291-3bb37e90-12ba-11e8-8a79-e162b1cb77d5.png)
 5. Setup campaign action
-![image](https://user-images.githubusercontent.com/462477/42260988-d7879afe-7f66-11e8-9805-84311e5de561.png)
+![image](https://user-images.githubusercontent.com/462477/42267924-9341056a-7f7a-11e8-816a-f071df25723d.png)
