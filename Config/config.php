@@ -14,6 +14,7 @@ return [
                     'doctrine.dbal.default_connection',
                     'mautic.campaign.model.campaign',
                     'mautic.campaign.model.event',
+                    'mautic.lead.model.lead',
                 ],
             ],
         ],

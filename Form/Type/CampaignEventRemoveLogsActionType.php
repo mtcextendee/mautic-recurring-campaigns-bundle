@@ -82,6 +82,28 @@ class CampaignEventRemoveLogsActionType extends AbstractType
             ]
         );
 
+        $builder->add(
+            'add_to_segments',
+            'leadlist_choices',
+            [
+                'label'      => 'plugin.recurring.campaigns.campaign.add_to_segments',
+                'label_attr' => ['class' => 'control-label'],
+                'multiple'   => true,
+                'required'   => false,
+            ]
+        );
+
+        $builder->add(
+            'remove_from_segments',
+            'leadlist_choices',
+            [
+                'label'      => 'plugin.recurring.campaigns.campaign.remove_from_segments',
+                'label_attr' => ['class' => 'control-label'],
+                'multiple'   => true,
+                'required'   => false,
+            ]
+        );
+
     }
     /**
      * {@inheritdoc}

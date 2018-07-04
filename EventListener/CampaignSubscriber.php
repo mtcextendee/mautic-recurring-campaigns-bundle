@@ -19,6 +19,7 @@ use Mautic\CampaignBundle\Event\CampaignExecutionEvent;
 use Mautic\CampaignBundle\Model\CampaignModel;
 use Mautic\CampaignBundle\Model\EventModel;
 use Mautic\CoreBundle\EventListener\CommonSubscriber;
+use Mautic\LeadBundle\Model\LeadModel;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
 use MauticPlugin\MauticRecurringCampaignsBundle\RecurringCampaignsEvents;
 
@@ -45,6 +46,11 @@ class CampaignSubscriber extends CommonSubscriber
     private $eventModel;
 
     /**
+     * @var LeadModel
+     */
+    private $leadModel;
+
+    /**
      * ButtonSubscriber constructor.
      *
      * @param IntegrationHelper $integrationHelper
@@ -52,14 +58,17 @@ class CampaignSubscriber extends CommonSubscriber
      * @param CampaignModel     $campaignModel
      * @param EventModel        $eventModel
      *
+     * @param LeadModel         $leadModel
+     *
      * @internal param IntegrationHelper $helper
      */
-    public function __construct(IntegrationHelper $integrationHelper, Connection $db, CampaignModel $campaignModel, EventModel $eventModel)
+    public function __construct(IntegrationHelper $integrationHelper, Connection $db, CampaignModel $campaignModel, EventModel $eventModel, LeadModel $leadModel)
     {
         $this->integrationHelper = $integrationHelper;
         $this->db = $db;
         $this->campaignModel = $campaignModel;
         $this->eventModel = $eventModel;
+        $this->leadModel = $leadModel;
     }
 
     /**
@@ -147,8 +156,17 @@ class CampaignSubscriber extends CommonSubscriber
                     ]
                 );
             }
+
             if(!empty($event->getConfig()['remove'])){
                 $this->campaignModel->removeLead($this->campaignModel->getEntity($campaignId), $lead->getId(), true);
+            }
+
+            if(!empty($event->getConfig()['add_to_segments'])){
+                $this->leadModel->addToLists($lead, $event->getConfig()['add_to_segments']);
+            }
+
+            if(!empty($event->getConfig()['remove_from_segments'])){
+                $this->leadModel->removeFromLists($lead, $event->getConfig()['remove_from_segments']);
             }
         }
     }
