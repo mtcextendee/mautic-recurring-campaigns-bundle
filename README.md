@@ -20,9 +20,6 @@ Mautic insert every action of campaigns to campaign_lead_event_log table. This p
 
 composer require kuzmany/mautic-recurring-campaigns-bundle
 
-### Alternative Installation
-
-Download the last version of plugin https://madesimple.madesimple.cloud/asset/6:mauticrecurringcampaignsbundle, unzip to Mautic plugins directory and clear cache directory (app/cache/prod/).
 
 ### Then:
 
