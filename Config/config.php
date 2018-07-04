@@ -4,7 +4,7 @@ return [
     'name'        => 'RecurringCampaigns',
     'description' => 'Repeating tasks for Mautic',
     'author'      => 'kuzmany.biz',
-    'version'     => '1.0.0',
+    'version'     => '1.3.0',
     'services' => [
         'events' => [
             'mautic.plugin.reccuring.campaigns.campaign.subscriber' => [
