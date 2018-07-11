@@ -118,9 +118,10 @@ class CampaignSubscriber extends CommonSubscriber
             return;
         }
 
+        $config = $event->getConfig();
         $lead = $event->getLead();
-        $campaigns = $event->getConfig()['campaigns'];
-        $limit = $event->getConfig()['limit'];
+        $campaigns = $config['campaigns'];
+        $limit = $config['limit'];
         $qb = $this->db;
 
         $properties = $event->getEvent()['properties'];
@@ -138,7 +139,7 @@ class CampaignSubscriber extends CommonSubscriber
         $this->eventModel->saveEntity($eventEntity);
 
         foreach ($campaigns as $campaignId) {
-            if(!empty($event->getConfig()['action'])){
+            if(!empty($config['action'])){
                 $qb->delete(
                     MAUTIC_TABLE_PREFIX.'campaign_lead_event_log',
                     [
@@ -157,17 +158,24 @@ class CampaignSubscriber extends CommonSubscriber
                 );
             }
 
-            if(!empty($event->getConfig()['remove'])){
+            if(!empty($config['remove'])){
                 $this->campaignModel->removeLead($this->campaignModel->getEntity($campaignId), $lead->getId(), true);
             }
 
-            if(!empty($event->getConfig()['add_to_segments'])){
-                $this->leadModel->addToLists($lead, $event->getConfig()['add_to_segments']);
+            if(!empty($config['add_to_segments'])){
+                $this->leadModel->addToLists($lead, $config['add_to_segments']);
             }
 
-            if(!empty($event->getConfig()['remove_from_segments'])){
-                $this->leadModel->removeFromLists($lead, $event->getConfig()['remove_from_segments']);
+            if(!empty($config['remove_from_segments'])){
+                $this->leadModel->removeFromLists($lead, $config['remove_from_segments']);
             }
+
+            $addTags    = (!empty($config['tags']['add_tags'])) ? $config['tags']['add_tags'] : [];
+            $removeTags = (!empty($config['tags']['remove_tags'])) ? $config['tags']['remove_tags'] : [];
+
+            $this->leadModel->modifyTags($lead, $addTags, $removeTags);
+
+            return $event->setResult(true);
         }
     }
 }

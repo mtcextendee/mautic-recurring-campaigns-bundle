@@ -104,6 +104,14 @@ class CampaignEventRemoveLogsActionType extends AbstractType
             ]
         );
 
+        $builder->add(
+            'tags',
+            'modify_lead_tags',
+            [
+                'label'      => false,
+            ]
+        );
+
     }
     /**
      * {@inheritdoc}
