@@ -90,6 +90,7 @@ class CampaignEventRemoveLogsActionType extends AbstractType
                 'label_attr' => ['class' => 'control-label'],
                 'multiple'   => true,
                 'required'   => false,
+                'global_only' => false,
             ]
         );
 
@@ -101,6 +102,7 @@ class CampaignEventRemoveLogsActionType extends AbstractType
                 'label_attr' => ['class' => 'control-label'],
                 'multiple'   => true,
                 'required'   => false,
+                'global_only' => false,
             ]
         );
 
