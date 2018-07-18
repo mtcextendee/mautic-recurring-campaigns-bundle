@@ -121,22 +121,7 @@ class CampaignSubscriber extends CommonSubscriber
         $config = $event->getConfig();
         $lead = $event->getLead();
         $campaigns = $config['campaigns'];
-        $limit = $config['limit'];
         $qb = $this->db;
-
-        $properties = $event->getEvent()['properties'];
-        /** @var Event $event */
-        $eventEntity = $this->eventModel->getEntity($event->getEvent()['id']);
-        $numberOfRotation = isset($properties['numberOfRotation']) ? $properties['numberOfRotation'] : 0;
-
-        // return true if max execution
-        if (!empty($limit) && $numberOfRotation >= $limit) {
-            return $event->setResult(true);
-        }
-
-        $properties['numberOfRotation'] = $numberOfRotation + 1;
-        $eventEntity->setProperties($properties);
-        $this->eventModel->saveEntity($eventEntity);
 
         foreach ($campaigns as $campaignId) {
             if(!empty($config['action'])){

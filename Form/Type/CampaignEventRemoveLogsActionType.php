@@ -45,20 +45,6 @@ class CampaignEventRemoveLogsActionType extends AbstractType
         ]);
 
         $builder->add(
-            'limit',
-            NumberType::class,
-            [
-                'label' => 'plugin.recurring.campaigns.campaign.execute.limit',
-                'label_attr'  => ['class' => 'control-label'],
-                'attr'=> [
-                    'class'   => 'form-control',
-                    'tooltip'=>'plugin.recurring.campaigns.campaign.execute.limit.desc'
-                ],
-                'data'       => !empty($options['data']['limit']) ? $options['data']['limit'] : 0,
-            ]
-        );
-
-        $builder->add(
             'action',
             'yesno_button_group',
             [
