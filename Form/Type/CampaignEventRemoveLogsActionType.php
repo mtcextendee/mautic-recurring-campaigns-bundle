@@ -37,6 +37,7 @@ class CampaignEventRemoveLogsActionType extends AbstractType
             ],
             'multiple'   => true,
             'required' => true,
+            'include_this'=> true,
             'constraints' => [
                 new NotBlank([
                     'message' => 'mautic.core.value.required',
