@@ -123,11 +123,11 @@ class CampaignSubscriber extends CommonSubscriber
         $campaigns = $config['campaigns'];
         $qb = $this->db;
 
-        $executingCampaign   = $event->getEvent()->getCampaign();
+     /*   $executingCampaign   = $event->getEvent()->getCampaign();
 
         if (array_key_exists('this', $campaigns)) {
             $campaigns[] = $executingCampaign->getId();
-        }
+        }*/
 
         foreach ($campaigns as $campaignId) {
             if(!empty($config['action'])){
