@@ -1,5 +1,8 @@
 # MauticRecurringCampaignsBundle 
 
+<strong style="color:#cc7700">Bundle is deprecated</strong>. 
+Mautic 2.14 finally have added support for recurring campaigns
+
 #### Support projects
 
 - Extensions family for Mautic https://mtcextendee.com/
